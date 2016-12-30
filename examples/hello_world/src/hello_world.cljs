@@ -5,9 +5,9 @@
 
 (def app-state (atom {:name "John"}))
 
-(rum/defc simple-view < rum/cursored rum/cursored-watch [data horizontal-orientation]
+(rum/defc simple-view < rum/reactive [data horizontal-orientation]
   (f/with-options
-    {:form {:horizontal @horizontal-orientation}}
+    {:form {:horizontal (rum/react horizontal-orientation)}}
     (f/panel
      "Hello, world"
      (f/form
