@@ -1,4 +1,4 @@
-(defproject rum-reforms "0.4.3"                     ;; Keep in sync with reforms.
+(defproject rum-reforms "0.4.3.1"                     ;; Keep in sync with reforms.
             :description "Reforms bindings for Rum."
             :url "http://bilus.github.io/reforms/"
             :license {:name "Eclipse Public License"
