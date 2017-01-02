@@ -3,7 +3,8 @@
             [reforms.validation :as v :include-macros true]
             [rum.core :as rum]
             [examples.shared.utils :refer [inspector-view]]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [taoensso.timbre :as log]))
 
 (def customers (atom []))
 (def customer (atom {:city "New York"}))
@@ -35,7 +36,7 @@
 (defn sign-up!
   [customers customer ui-state]
   (when (apply v/validate! customer ui-state customer-validators)
-    (swap! customers (fn [xs] (conj xs @customer)))))
+    (swap! customers (fn [xs] (conj xs (rum/react customer))))))
 
 (defn force-error!
   [customer ui-state]
@@ -44,7 +45,7 @@
     ui-state
     (v/force-error [:server-error] "An error has occurred")))
 
-(rum/defc signup-form-view < rum/cursored rum/cursored-watch
+(rum/defc signup-form-view < rum/reactive
   [customers customer ui-state]
   (f/panel
     "Add customer"
@@ -63,21 +64,24 @@
               (v/password "Password" customer [:password1] :placeholder "Enter password")
               (v/password "Confirm password" customer [:password2] :placeholder "Re-enter password")
               (v/error-alert [:server-error])
+              ;; FIXME work around in order to refresh the form
+              (when-let [errors (rum/react ui-state)]
+                (log/error "There are errors " errors))
               (f/form-buttons
                 (f/button-primary "Save" #(sign-up! customers customer ui-state))
                 (f/button-default "Simulate server error" #(force-error! customer ui-state)))))))
 
-(rum/defc customer-list-view < rum/cursored rum/cursored-watch
+(rum/defc customer-list-view < rum/reactive
   [customers]
   [:div.customers
    [:h3 "Customers"]
-   (if (not-empty @customers)
+   (if (not-empty (rum/react customers))
      [:ul.list-unstyled
-      (for [{:keys [first last]} @customers]
+      (for [{:keys [first last]} (rum/react customers)]
         [:li (str/join " " [first last])])]
      [:em "No customers."])])
 
-(rum/defc main-view
+(rum/defc main-view < rum/reactive
   []
   [:div
    [:div.row

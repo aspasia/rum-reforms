@@ -10,7 +10,7 @@
                       :selected nil
                       :login {}}))
 
-(rum/defc simple-view < rum/cursored rum/cursored-watch
+(rum/defc simple-view < rum/reactive
   [data]
   [:div
    [:h1 {:key "h1"} "Supported controls"]
@@ -25,7 +25,7 @@
 
      [:h4 "Auto-aligning form with validation"]
      (f/with-options
-       {:form {:horizontal (get-in @data [:login :horizontal])}}
+       {:form {:horizontal (get-in (rum/reactive data) [:login :horizontal])}}
        (f/form
         {:on-submit #(js/alert "Logging in")}
         (f/text "Username" data [:login :username] :placeholder "Type your login here")
