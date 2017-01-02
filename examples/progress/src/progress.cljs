@@ -26,7 +26,7 @@
   [operation data]
   (simulate-long-operation! operation data false))
 
-(rum/defc simple-view < rum/cursored rum/cursored-watch
+(rum/defc simple-view < rum/reactive
   [data]
   (f/panel {:key "p"}
            "Progress"
@@ -37,9 +37,9 @@
              (v/error-alert [:operation-failed])
              (f/form-buttons
                (v/button-primary "Successful operation" #(start-succeed! :op1 data)
-                                 :in-progress (= :op1 (:progress @data)) :disabled (:progress @data))
+                                 :in-progress (= :op1 (:progress (rum/react data))) :disabled (:progress (rum/react data)))
                (v/button-default "Failing operation" #(start-fail! :op2 data)
-                                 :in-progress (= :op2 (:progress @data)) :disabled (:progress @data))))))
+                                 :in-progress (= :op2 (:progress (rum/react data))) :disabled (:progress (rum/react data)))))))
 
 (rum/defc main-view
   []

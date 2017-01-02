@@ -1,4 +1,4 @@
-(defproject rum-reforms "0.4.3"                     ;; Keep in sync with reforms.
+(defproject rum-reforms "0.4.3.1"                     ;; Keep in sync with reforms.
             :description "Reforms bindings for Rum."
             :url "http://bilus.github.io/reforms/"
             :license {:name "Eclipse Public License"
@@ -6,7 +6,7 @@
             :dependencies [[org.clojure/clojure "1.7.0"]
                            [org.clojure/clojurescript "1.7.122"]
                            [reforms "0.4.3"]
-                           [rum "0.4.2"]
+                           [rum "0.10.7"]
                            [com.taoensso/timbre "4.1.1"]]
             :jar-exclusions [#"\.cljx|\.swp|\.swo|\.DS_Store"]
             :auto-clean false

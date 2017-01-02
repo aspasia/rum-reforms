@@ -5,7 +5,7 @@
 
 (def customer (atom {:type :private}))
 
-(defmulti render-details (comp :type deref))
+(defmulti render-details (comp rum/react (fn [customer] (rum/cursor customer :type))))
 
 (defmethod render-details :private
   [customer]
@@ -39,7 +39,7 @@
             customer [:city]
             :placeholder "Enter city name")))
 
-(rum/defc customer-form-view < rum/cursored rum/cursored-watch
+(rum/defc customer-form-view < rum/reactive
   [customer]
   (f/form
     (f/group-title {:class "group-title-main"} "Customer info")
